@@ -10,8 +10,10 @@ export function usePosts() {
     setLoading(true);
     try {
       const response = await fetchPosts();
-      const reversed = response.data.results.reverse();
-      setPosts(reversed);
+      const sorted = response.data.results.slice().sort(
+        (a: Post, b: Post) => new Date(b.created_datetime).getTime() - new Date(a.created_datetime).getTime()
+      );
+      setPosts(sorted);
     } catch (error) {
       console.error(error);
     } finally {
